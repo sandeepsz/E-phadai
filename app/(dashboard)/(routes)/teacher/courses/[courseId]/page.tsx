@@ -1,0 +1,103 @@
+import { db } from "@/lib/db";
+import { auth } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
+import { LayoutDashboard, ListChecks, CoinsIcon } from "lucide-react";
+import CourseTitle from "./_components/course-title";
+import CourseDescription from "./_components/course-description";
+import CourseImage from "./_components/image-form";
+import Category from "./_components/category-form";
+import PriceForm from "./_components/price-form";
+const CourseId = async ({ params }: { params: { courseId: string } }) => {
+  const { userId } = auth();
+
+  if (!userId) {
+    return redirect("/");
+  }
+  const course = await db.course.findUnique({
+    where: {
+      id: params.courseId,
+    },
+  });
+
+  const categories = await db.category.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  });
+
+  if (!course) {
+    return redirect("/");
+  }
+
+  const requiredFields = [
+    course.title,
+    course.description,
+    course.imageUrl,
+    course.price,
+    course.categoryId,
+  ];
+
+  const totalFields = requiredFields.length;
+  const completedFields = requiredFields.filter(Boolean).length;
+
+  const completedText = `(${completedFields}/${totalFields})`;
+
+  return (
+    <div className="p-6">
+      <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-y-2">
+          <h1 className="text-2xl font-medium">Course setup</h1>
+          <span className="text-sm text-slate-600">
+            Complete all fields {completedText}
+          </span>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-14">
+        <div>
+          <div className="flex items-center gap-x-2">
+            <LayoutDashboard className="w-5 h-5 text-[#5417d7]" />
+            <h2>Customize your course details</h2>
+          </div>
+        </div>
+      </div>
+
+      <div className="md:flex gap-6 ">
+        <div className="w-full">
+          <CourseTitle initialData={course} courseId={params.courseId} />
+          <CourseDescription initialData={course} courseId={params.courseId} />
+          <CourseImage initialData={course} courseId={params.courseId} />
+          <Category
+            initialData={course}
+            courseId={params.courseId}
+            options={categories.map((category) => ({
+              label: category.name,
+              value: category.id,
+            }))}
+          />
+        </div>
+        <div className="space-y-6 w-full">
+          <div>
+            <div className="flex items-center space-x-2">
+              <ListChecks className="w-5 h-5 text-[#5417d7]" />
+              <h2>Course Chapter</h2>
+            </div>
+            <div>TODO:chapters</div>
+          </div>
+
+          <div>
+            <div className="flex items-center space-x-2">
+              <CoinsIcon className="w-5 h-5 text-[#5417d7]" />
+              <h2 className="font-semibold">Course Price</h2>
+            </div>
+            <div>
+              <PriceForm initialData={course} courseId={params.courseId} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CourseId;
