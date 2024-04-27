@@ -1,12 +1,13 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import { LayoutDashboard, ListChecks, CoinsIcon } from "lucide-react";
+import { LayoutDashboard, ListChecks, CoinsIcon, Files } from "lucide-react";
 import CourseTitle from "./_components/course-title";
 import CourseDescription from "./_components/course-description";
 import CourseImage from "./_components/image-form";
 import Category from "./_components/category-form";
 import PriceForm from "./_components/price-form";
+import AttachmentForm from "./_components/attachment-form";
 const CourseId = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = auth();
 
@@ -16,6 +17,13 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
   const course = await db.course.findUnique({
     where: {
       id: params.courseId,
+    },
+    include: {
+      attachments: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
     },
   });
 
@@ -82,7 +90,10 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
               <ListChecks className="w-5 h-5 text-[#5417d7]" />
               <h2>Course Chapter</h2>
             </div>
-            <div>TODO:chapters</div>
+            {/* Pachee change garna parachha */}
+            <div>
+              <PriceForm initialData={course} courseId={params.courseId} />
+            </div>
           </div>
 
           <div>
@@ -92,6 +103,16 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
             </div>
             <div>
               <PriceForm initialData={course} courseId={params.courseId} />
+            </div>
+          </div>
+
+          <div>
+            <div className="flex items-center space-x-2">
+              <Files className="w-5 h-5 text-[#5417d7]" />
+              <h2 className="font-semibold">Course Attachments</h2>
+            </div>
+            <div>
+              <AttachmentForm initialData={course} courseId={params.courseId} />
             </div>
           </div>
         </div>
