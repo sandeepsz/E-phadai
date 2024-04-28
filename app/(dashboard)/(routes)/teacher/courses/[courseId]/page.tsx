@@ -85,14 +85,10 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
           />
         </div>
         <div className="space-y-6 w-full">
-          <div>
+          <div className="mt-4">
             <div className="flex items-center space-x-2">
               <ListChecks className="w-5 h-5 text-[#5417d7]" />
               <h2>Course Chapter</h2>
-            </div>
-            {/* Pachee change garna parachha */}
-            <div>
-              <PriceForm initialData={course} courseId={params.courseId} />
             </div>
           </div>
 
