@@ -1,15 +1,14 @@
 "use client";
 import React, { useState } from "react";
 import * as z from "zod";
-import { PenIcon, PlusCircle } from "lucide-react";
+import { CircleX, File, Loader2, PenIcon, PlusCircle } from "lucide-react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Course, Attachment } from "@prisma/client";
-import Image from "next/image";
 import { FileUpload } from "@/components/file-upload";
+import { NextResponse } from "next/server";
 
 interface AttachmentFormProps {
   initialData: Course & { attachments: Attachment[] };
@@ -23,6 +22,7 @@ const formSchema = z.object({
 const AttachmentForm = ({ initialData, courseId }: AttachmentFormProps) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
+  const [isDelete, setDelete] = useState<string | null>(null);
 
   const toggle = () => setIsEditing((value) => !value);
 
@@ -34,6 +34,19 @@ const AttachmentForm = ({ initialData, courseId }: AttachmentFormProps) => {
       router.refresh();
     } catch {
       toast.error("Something went wrong!!!");
+    }
+  };
+
+  const onDelete = async (id: string) => {
+    try {
+      setDelete(id);
+      await axios.delete(`/api/courses/${courseId}/attachments/${id}`);
+      toast.success("Attachment deleted !!");
+      router.refresh();
+    } catch (error) {
+      toast.error("Something went wrong!!!");
+    } finally {
+      setDelete(null);
     }
   };
 
@@ -59,14 +72,29 @@ const AttachmentForm = ({ initialData, courseId }: AttachmentFormProps) => {
           )}
 
           {initialData.attachments.length >= 0 && (
-            <div className="space-y-6">
+            <div className="space-y-4">
               {initialData.attachments.map((attachment) => (
-                <p
-                  className="bg-slate-600 p-4 rounded-md"
+                <div
+                  className=" flex items-center mt-2 p-2 w-full bg-[#c1b1e4] text-[#6926fc] border-[#6926fc] border rounded-md"
                   key={attachment.courseId}
                 >
-                  {attachment.courseId}
-                </p>
+                  <File className="mr-2 w-4 h-4 flex-shrink-0 " />
+                  <p className="text-xs line-clamp-1">{attachment.courseId}</p>
+                  {isDelete === attachment.id && (
+                    <div>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    </div>
+                  )}
+
+                  {isDelete !== attachment.id && (
+                    <button
+                      onClick={() => onDelete(attachment.id)}
+                      className="ml-auto hover-opacity-75 transition"
+                    >
+                      <CircleX className="h-6 w-6 hover:text-red-400 " />
+                    </button>
+                  )}
+                </div>
               ))}
             </div>
           )}
