@@ -8,6 +8,7 @@ import CourseImage from "./_components/image-form";
 import Category from "./_components/category-form";
 import PriceForm from "./_components/price-form";
 import AttachmentForm from "./_components/attachment-form";
+import ChapterForm from "./_components/chapter-form";
 const CourseId = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = auth();
 
@@ -17,11 +18,17 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
   const course = await db.course.findUnique({
     where: {
       id: params.courseId,
+      userId,
     },
     include: {
       attachments: {
         orderBy: {
           createdAt: "desc",
+        },
+      },
+      chapters: {
+        orderBy: {
+          position: "asc",
         },
       },
     },
@@ -43,6 +50,7 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
     course.imageUrl,
     course.price,
     course.categoryId,
+    course.chapters.some((chapter) => chapter.isPublished && chapter.isFree),
   ];
 
   const totalFields = requiredFields.length;
@@ -65,7 +73,7 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
         <div>
           <div className="flex items-center gap-x-2">
             <LayoutDashboard className="w-5 h-5 text-[#5417d7]" />
-            <h2>Customize your course details</h2>
+            <h2 className="font-semibold">Customize your course details</h2>
           </div>
         </div>
       </div>
@@ -86,14 +94,17 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
         </div>
         <div className="space-y-6 w-full">
           <div className="mt-4">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-y-2">
               <ListChecks className="w-5 h-5 text-[#5417d7]" />
-              <h2>Course Chapter</h2>
+              <h2 className="font-semibold">Course Chapters</h2>
+            </div>
+            <div>
+              <ChapterForm initialData={course} courseId={params.courseId} />
             </div>
           </div>
 
           <div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-y-2">
               <CoinsIcon className="w-5 h-5 text-[#5417d7]" />
               <h2 className="font-semibold">Course Price</h2>
             </div>
@@ -101,9 +112,8 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
               <PriceForm initialData={course} courseId={params.courseId} />
             </div>
           </div>
-
           <div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-y-2">
               <Files className="w-5 h-5 text-[#5417d7]" />
               <h2 className="font-semibold">Course Attachments</h2>
             </div>

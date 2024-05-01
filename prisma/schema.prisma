@@ -27,10 +27,11 @@ model Course {
   category   Category? @relation(fields: [categoryId], references: [id])
 
   attachments Attachment[]
+  chapters    Chapter[]
+  Premium     Premium[]
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  chapter   Chapter[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([categoryId])
 }
@@ -51,7 +52,7 @@ model Attachment {
 model Category {
   id     String   @id @default(uuid())
   name   String   @unique
-  Course Course[]
+  course Course[]
 }
 
 model Chapter {
@@ -61,6 +62,7 @@ model Chapter {
   videoUrl    String? @db.Text
   isPublished Boolean @default(false)
   isFree      Boolean @default(false)
+  position    Int
 
   muxData MuxData?
 
@@ -71,6 +73,8 @@ model Chapter {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([courseId])
 }
 
 model MuxData {
@@ -80,6 +84,9 @@ model MuxData {
 
   chapterId String  @unique
   chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model UserProgress {
@@ -87,11 +94,26 @@ model UserProgress {
 
   userId    String
   chapterId String
-  Chapter   Chapter? @relation(fields: [chapterId], references: [id])
+  chapter   Chapter? @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@unique([chapterId])
   @@index([chapterId, userId])
+}
+
+model Premium {
+  id String @id @default(uuid())
+
+  userId String
+
+  courseId String
+
+  course Course @relation(fields: [courseId], onDelete: Cascade, references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([courseId])
 }
