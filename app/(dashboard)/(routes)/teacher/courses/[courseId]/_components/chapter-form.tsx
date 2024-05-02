@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Chapter, Course } from "@prisma/client";
 import { cn } from "@/lib/utils";
+import ChapterList from "./chapter-list";
 
 interface ChapterFormProps {
   initialData: Course & { chapters: Chapter[] };
@@ -54,7 +55,6 @@ const ChapterForm = ({ initialData, courseId }: ChapterFormProps) => {
         values
       );
 
-      console.log("---->RRR", response);
       toast.success("Chapter created !");
       toggleCreating();
       router.refresh();
@@ -62,10 +62,24 @@ const ChapterForm = ({ initialData, courseId }: ChapterFormProps) => {
       toast.error("Something went wrong!!!");
     }
   };
+
+  const onReorder = async (updateData: { id: string; position: number }[]) => {
+    try {
+      setIsUpdating(true);
+      await axios.put(`/api/courses/${courseId}/chapters/reorder`, {
+        list: updateData,
+      });
+      toast.success("chapters reorder");
+      router.refresh();
+    } catch {
+      toast.error("Something went wrong");
+    }
+  };
+
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex  items-center justify-between">
-        Course Description
+        Course Chapters
         <Button onClick={toggleCreating} variant="ghost">
           {isCreating ? (
             <>Cancel</>
@@ -116,7 +130,12 @@ const ChapterForm = ({ initialData, courseId }: ChapterFormProps) => {
           )}
         >
           {!initialData.chapters.length && "No chapters added"}
-          {/* ADD list of chapters later */}
+          <ChapterList
+            onEdit={() => {}}
+            // @ts-nocheck
+            onReorder={onReorder}
+            data={initialData.chapters || []}
+          />
         </div>
       )}
       {!isCreating && (
