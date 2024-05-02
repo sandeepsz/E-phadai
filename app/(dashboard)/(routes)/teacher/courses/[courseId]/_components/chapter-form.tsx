@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { PenIcon, PlusCircle } from "lucide-react";
+import { Loader2, PenIcon, PlusCircle } from "lucide-react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -70,6 +70,7 @@ const ChapterForm = ({ initialData, courseId }: ChapterFormProps) => {
         list: updateData,
       });
       toast.success("chapters reorder");
+      setIsUpdating(false);
       router.refresh();
     } catch {
       toast.error("Something went wrong");
@@ -77,7 +78,12 @@ const ChapterForm = ({ initialData, courseId }: ChapterFormProps) => {
   };
 
   return (
-    <div className="mt-6 border bg-slate-100 rounded-md p-4">
+    <div className="relative mt-6 border bg-slate-100 rounded-md p-4">
+      {isUpdating && (
+        <div className="absolute h-full w-full rounded-md bg-slate-900/50 top-0 left-0  flex items-center justify-center">
+          <Loader2 className="h-8 w-8 text-[#5417d7] animate-spin" />
+        </div>
+      )}
       <div className="font-medium flex  items-center justify-between">
         Course Chapters
         <Button onClick={toggleCreating} variant="ghost">
