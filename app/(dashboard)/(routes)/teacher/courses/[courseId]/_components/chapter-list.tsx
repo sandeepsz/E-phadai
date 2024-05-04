@@ -83,7 +83,7 @@ const ChapterList = ({ data, onEdit, onReorder }: ChapterListProps) => {
                   >
                     <div
                       className={cn(
-                        "px-2 py-3 border-r-slate-200  hover:bg-slate-300 rounded-l-md  transition",
+                        "px-2 py-3 border-r-slate-200  hover:text-[#5417d7]-300 rounded-l-md  transition",
                         chapter.isPublished &&
                           "border-r-sky-200 hover:bg-sky-200"
                       )}

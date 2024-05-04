@@ -5,11 +5,17 @@ const databaseSeeding = new PrismaClient();
 async function main() {
   try {
     const categories = [
-      { name: "Math" },
-      { name: "Science" },
-      { name: "History" },
-      { name: "Fitness" },
-      { name: "English Literature" },
+      { name: "Web development" },
+      { name: "Mobile development" },
+      { name: "Data Science and ML" },
+      { name: "AI/ML" },
+      { name: "Dev Ops" },
+      { name: "Quality Assurance" },
+      { name: "Math and numerical method" },
+      { name: "Science and technology" },
+      { name: "History and current affairs" },
+      { name: "Health and fitness" },
+      { name: "Geography" },
     ];
 
     for (const category of categories) {
