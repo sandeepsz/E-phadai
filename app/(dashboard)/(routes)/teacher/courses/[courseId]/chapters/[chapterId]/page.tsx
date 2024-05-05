@@ -1,7 +1,94 @@
+import { db } from "@/lib/db";
+import { auth } from "@clerk/nextjs";
+import { ArrowLeft, LayoutDashboard } from "lucide-react";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 import React from "react";
+import CourseId from "../../page";
+import ChapterTitle from "./_components/chapter-title";
+import ChapterDescription from "./_components/chapter-description";
 
-const Chapter = () => {
-  return <div>Edit Page</div>;
+const ChapterEditPage = async ({
+  params,
+}: {
+  params: { courseId: string; chapterId: string };
+}) => {
+  const { userId } = auth();
+
+  console.log(userId);
+
+  if (!userId) {
+    return redirect("/");
+  }
+  const chapter = await db.chapter.findUnique({
+    where: {
+      id: params.chapterId,
+      courseId: params.courseId,
+    },
+    include: {
+      muxData: true,
+    },
+  });
+
+  if (!chapter) {
+    return redirect("/");
+  }
+
+  const requiredFields = [chapter.title, chapter.description, chapter.videoUrl];
+
+  const totalFields = requiredFields.length;
+
+  const completeFields = requiredFields.filter(Boolean).length;
+
+  const completeSteps = `${completeFields}/${totalFields}`;
+
+  return (
+    <div className="p-6">
+      <div className="flex items-center justify-between">
+        <div className="w-full">
+          <Link
+            href={`/teacher/courses/${params.courseId}`}
+            className="flex items-center gap-2  text-sm hover:opacity-80 transition-all mb-6"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to course
+          </Link>
+          <div className="flex items-center justify-between w-full">
+            <div className="flex flex-col gap-y-2">
+              <h1 className="text-2xl font-medium">Chapter setup</h1>
+              <span className="text-sm text-slate-600">
+                Complete all fields {completeSteps}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+        <div className="space-y-4">
+          <div>
+            <div className="flex items-center gap-x-2 ">
+              <LayoutDashboard className="w-5 h-5 text-[#5417d7]" />
+              <h2 className="font-semibold">Customize your course chapters</h2>
+            </div>
+          </div>
+
+          <div>
+            <ChapterTitle
+              initialData={chapter}
+              courseId={params.courseId}
+              chapterId={params.chapterId}
+            />
+            <ChapterDescription
+              initialData={chapter}
+              courseId={params.courseId}
+              chapterId={params.chapterId}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
-export default Chapter;
+export default ChapterEditPage;
