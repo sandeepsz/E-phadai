@@ -1,19 +1,19 @@
-import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
-export async function PUT(
+import { db } from "@/lib/db";
+
+export async function PATCH(
   req: Request,
   { params }: { params: { courseId: string; chapterId: string } }
 ) {
   try {
     const { userId } = auth();
-    const {} = req.json();
-
+    const { isPublished, ...values } = await req.json();
     if (!userId) {
-      return new NextResponse("Access denied!", { status: 401 });
+      return new NextResponse("Unauthorized user", { status: 401 });
     }
 
-    const courseMalik = db.course.findUnique({
+    const courseMalik = await db.course.findUnique({
       where: {
         id: params.courseId,
         userId: userId,
@@ -21,10 +21,22 @@ export async function PUT(
     });
 
     if (!courseMalik) {
-      return new NextResponse("Unauthorized", { status: 401 });
+      return new NextResponse("Unauthorized user");
     }
+
+    const chapter = await db.chapter.update({
+      where: {
+        id: params.chapterId,
+        courseId: params.courseId,
+      },
+      data: {
+        ...values,
+      },
+    });
+
+    return NextResponse.json(chapter);
   } catch (error) {
-    console.log("CHAPTER ID:", error);
-    return new NextResponse("Internal server error", { status: 500 });
+    console.log("Error;", error);
+    return new NextResponse("Internal Sever Error", { status: 500 });
   }
 }
