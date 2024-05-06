@@ -1,12 +1,13 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
-import { ArrowLeft, LayoutDashboard } from "lucide-react";
+import { ArrowLeft, Eye, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
-import CourseId from "../../page";
+
 import ChapterTitle from "./_components/chapter-title";
 import ChapterDescription from "./_components/chapter-description";
+import AccessForm from "./_components/access-form";
 
 const ChapterEditPage = async ({
   params,
@@ -72,7 +73,6 @@ const ChapterEditPage = async ({
               <h2 className="font-semibold">Customize your course chapters</h2>
             </div>
           </div>
-
           <div>
             <ChapterTitle
               initialData={chapter}
@@ -80,6 +80,18 @@ const ChapterEditPage = async ({
               chapterId={params.chapterId}
             />
             <ChapterDescription
+              initialData={chapter}
+              courseId={params.courseId}
+              chapterId={params.chapterId}
+            />
+          </div>
+
+          <div>
+            <div className="flex items-center gap-x-2">
+              <Eye className="w-4 h-4  text-[#5417d7]" />
+              <h2>Access setting</h2>
+            </div>
+            <AccessForm
               initialData={chapter}
               courseId={params.courseId}
               chapterId={params.chapterId}
