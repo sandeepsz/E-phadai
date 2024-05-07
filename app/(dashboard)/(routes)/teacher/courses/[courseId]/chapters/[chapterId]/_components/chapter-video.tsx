@@ -40,7 +40,7 @@ const ChapterVideoForm = ({
         values
       );
       toggle();
-      toast.success("Course Description updated !");
+      toast.success("Chapter video is uploaded!");
       router.refresh();
     } catch {
       toast.error("Something went wrong!!!");
@@ -49,7 +49,7 @@ const ChapterVideoForm = ({
 
   return (
     <div className="mt-6 border bg-slate-100  rounded-md p-4">
-      <div className="font-medium   flex  items-center justify-between">
+      <div className="font-medium flex  items-center justify-between">
         Course video
         <Button onClick={toggle} variant="ghost">
           {isEditing && <>Cancel</>}

@@ -80,3 +80,65 @@ export async function PATCH(
     return new NextResponse("Internal Sever Error", { status: 500 });
   }
 }
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { courseId: string; chapterId: string } }
+) {
+  try {
+    const { userId } = auth();
+
+    if (!userId) {
+      return new NextResponse("Unauthorized user", { status: 401 });
+    }
+
+    const courseMalik = await db.course.findUnique({
+      where: {
+        id: params.courseId,
+        userId: userId,
+      },
+    });
+
+    if (!courseMalik) {
+      return new NextResponse("Unauthorized user");
+    }
+
+    const chapter = await db.chapter.findUnique({
+      where: {
+        id: params.chapterId,
+      },
+    });
+
+    if (!chapter) {
+      return new NextResponse("Not Found", { status: 404 });
+    }
+
+    if (chapter.videoUrl) {
+      const existingMuxData = await db.muxData.findFirst({
+        where: {
+          chapterId: params.chapterId,
+        },
+      });
+
+      if (existingMuxData) {
+        await mux.video.assets.delete(existingMuxData.assetId);
+        await db.muxData.delete({
+          where: {
+            id: existingMuxData.id,
+          },
+        });
+      }
+    }
+
+    const deletedChapter = await db.chapter.delete({
+      where: {
+        id: params.chapterId,
+      },
+    });
+
+    return NextResponse.json(deletedChapter);
+  } catch (error) {
+    console.log("Error;", error);
+    return new NextResponse("Internal Sever Error", { status: 500 });
+  }
+}
