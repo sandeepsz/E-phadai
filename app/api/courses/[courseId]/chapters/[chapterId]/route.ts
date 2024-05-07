@@ -4,8 +4,11 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
 const mux = new Mux({
-  tokenId: process.env.MUX_TOKEN_ID,
-  tokenSecret: process.env.MUX_TOKEN_SECRET,
+  // tokenId: process.env.MUX_TOKEN_ID,
+  // tokenSecret: process.env.MUX_TOKEN_SECRET,
+  tokenId: "945ea2dd-5b55-4e05-9374-84416bb3f3ee",
+  tokenSecret:
+    "1jacunZ2JoDEOh5muBMfqOz03E5zzoP5ypC3yW9tvm7poh9A16M+VAcCSS+Uq/W9eUzPX7w65hM",
 });
 
 export async function PATCH(
