@@ -1,28 +1,31 @@
 "use client";
 import React, { useState } from "react";
 import * as z from "zod";
-import { PenIcon, PlusCircle } from "lucide-react";
+import { PenIcon, PlusCircle, Video } from "lucide-react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Course } from "@prisma/client";
-import Image from "next/image";
+import { Chapter, MuxData } from "@prisma/client";
 import { FileUpload } from "@/components/file-upload";
+import MuxPlayer from "@mux/mux-player-react";
 
-interface ImageFormProps {
-  initialData: Course;
+interface ChapterVideoFormProps {
+  initialData: Chapter & { muxData?: MuxData | null };
   courseId: string | null;
+  chapterId: string;
 }
 
 const formSchema = z.object({
-  imageUrl: z.string().min(2, {
-    message: "Image must be required !!",
-  }),
+  videoUrl: z.string().min(1),
 });
 
-const CourseImage = ({ initialData, courseId }: ImageFormProps) => {
+const ChapterVideoForm = ({
+  initialData,
+  courseId,
+  chapterId,
+}: ChapterVideoFormProps) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -32,9 +35,12 @@ const CourseImage = ({ initialData, courseId }: ImageFormProps) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}`, values);
+      await axios.patch(
+        `/api/courses/${courseId}/chapters/${chapterId}`,
+        values
+      );
       toggle();
-      toast.success("Course Image updated !");
+      toast.success("Course Description updated !");
       router.refresh();
     } catch {
       toast.error("Something went wrong!!!");
@@ -44,53 +50,53 @@ const CourseImage = ({ initialData, courseId }: ImageFormProps) => {
   return (
     <div className="mt-6 border bg-slate-100  rounded-md p-4">
       <div className="font-medium   flex  items-center justify-between">
-        Course Image
+        Course video
         <Button onClick={toggle} variant="ghost">
           {isEditing && <>Cancel</>}
 
-          {!isEditing && !initialData.imageUrl && (
+          {!isEditing && !initialData.videoUrl && (
             <>
               <PlusCircle className="w-4 h-4 mr-2" />
-              Add an image
+              Add a Video
             </>
           )}
 
-          {!isEditing && initialData.imageUrl && (
+          {!isEditing && initialData.videoUrl && (
             <>
               <PenIcon className="h-4 w-4 mr-2" />
-              Edit Image
+              Edit Video
             </>
           )}
         </Button>
       </div>
       {!isEditing &&
-        (!initialData.imageUrl ? (
+        (!initialData.videoUrl ? (
           <div className=" flex items-center justify-center rounded-md h-52 bg-slate-400">
-            <ImageIcon className="h-10 w-10 text-slate-700" />
+            <Video className="h-10 w-10 text-slate-700" />
           </div>
         ) : (
           <div className="relative aspect-video mt-2">
-            <Image
-              fill
-              className="object-cover rounded-md"
-              src={initialData.imageUrl}
-              alt="Image of Course"
-            />
+            <MuxPlayer playbackId={initialData.muxData?.playbackId} />
           </div>
         ))}
 
       {isEditing && (
         <FileUpload
-          endpoint="courseImage"
+          endpoint="chapterVideo"
           onChange={(url) => {
             if (url) {
-              onSubmit({ imageUrl: url });
+              onSubmit({ videoUrl: url });
             }
           }}
         />
+      )}
+      {initialData.videoUrl && !isEditing && (
+        <div className="text-sm text-slate-600">
+          Videos can take few minutes to process. Please wait few seconds....
+        </div>
       )}
     </div>
   );
 };
 
-export default CourseImage;
+export default ChapterVideoForm;

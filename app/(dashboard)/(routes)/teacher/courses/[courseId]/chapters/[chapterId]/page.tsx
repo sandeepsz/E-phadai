@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
-import { ArrowLeft, Eye, LayoutDashboard } from "lucide-react";
+import { ArrowLeft, Eye, LayoutDashboard, Video } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -8,6 +8,7 @@ import React from "react";
 import ChapterTitle from "./_components/chapter-title";
 import ChapterDescription from "./_components/chapter-description";
 import AccessForm from "./_components/access-form";
+import ChapterVideoForm from "./_components/chapter-video";
 
 const ChapterEditPage = async ({
   params,
@@ -89,9 +90,24 @@ const ChapterEditPage = async ({
           <div>
             <div className="flex items-center gap-x-2">
               <Eye className="w-4 h-4  text-[#5417d7]" />
-              <h2>Access setting</h2>
+              <h2 className="font-semibold">Access setting</h2>
             </div>
             <AccessForm
+              initialData={chapter}
+              courseId={params.courseId}
+              chapterId={params.chapterId}
+            />
+          </div>
+        </div>
+        <div className="space-y-4">
+          <div>
+            <div className="flex items-center space-x-2">
+              <Video className="w-5 h-5  text-[#5417d7]" />
+              <h2 className="font-semibold">Video for chapter</h2>
+            </div>
+          </div>
+          <div>
+            <ChapterVideoForm
               initialData={chapter}
               courseId={params.courseId}
               chapterId={params.chapterId}
