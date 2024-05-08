@@ -7,6 +7,7 @@ import { X } from "lucide-react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { NextResponse } from "next/server";
 
 interface ChapterActionsProps {
   disabled: boolean;
@@ -23,6 +24,27 @@ const ChapterActions = ({
 }: ChapterActionsProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+
+  const onPublish = async () => {
+    try {
+      setIsLoading(true);
+      if (!isPublished) {
+        await axios.patch(
+          `/api/courses/${courseId}/chapters/${chapterId}/publish`
+        );
+        toast.success("course is published");
+        router.refresh();
+      } else {
+        await axios.patch(
+          `/api/courses/${courseId}/chapters/${chapterId}/unpublish`
+        );
+        toast.success("course is unpublished");
+        router.refresh();
+      }
+    } catch (error) {
+      toast.error("something went wrong!!");
+    }
+  };
 
   const onDelete = async () => {
     try {
@@ -42,8 +64,8 @@ const ChapterActions = ({
   return (
     <div className="flex items-center gap-x-2 mt-4">
       <Button
-        onClick={() => {}}
-        disabled={!disabled || isLoading}
+        onClick={onPublish}
+        disabled={disabled || isLoading}
         variant="default"
         size="sm"
         className="bg-[#5417d7]"

@@ -47,6 +47,7 @@ const ChapterEditPage = async ({
   const completeSteps = `${completeFields}/${totalFields}`;
 
   const isComplete = requiredFields.every(Boolean);
+
   return (
     <>
       {!chapter.isPublished && (
