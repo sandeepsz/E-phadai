@@ -9,6 +9,7 @@ import Category from "./_components/category-form";
 import PriceForm from "./_components/price-form";
 import AttachmentForm from "./_components/attachment-form";
 import ChapterForm from "./_components/chapter-form";
+
 const CourseId = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = auth();
 
@@ -67,6 +68,8 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
             Complete all fields {completedText}
           </span>
         </div>
+
+        {/* <CourseActions initialData={course} courseId={params.courseId} /> */}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-14">

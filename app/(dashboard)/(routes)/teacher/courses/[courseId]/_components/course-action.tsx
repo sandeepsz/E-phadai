@@ -9,19 +9,17 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { NextResponse } from "next/server";
 
-interface ChapterActionsProps {
+interface CourseActionsProps {
   disabled: boolean;
-  chapterId: string;
   courseId: string;
   isPublished: boolean;
 }
 
-const ChapterActions = ({
-  chapterId,
+const CourseActions = ({
   courseId,
   disabled,
   isPublished,
-}: ChapterActionsProps) => {
+}: CourseActionsProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -29,15 +27,11 @@ const ChapterActions = ({
     try {
       setIsLoading(true);
       if (!isPublished) {
-        await axios.patch(
-          `/api/courses/${courseId}/chapters/${chapterId}/publish`
-        );
+        await axios.patch(`/api/courses/${courseId}/publish`);
         toast.success("course is published");
         router.refresh();
       } else {
-        await axios.patch(
-          `/api/courses/${courseId}/chapters/${chapterId}/unpublish`
-        );
+        await axios.patch(`/api/courses/${courseId}/unpublish`);
         toast.success("course is unpublished");
         router.refresh();
       }
@@ -50,7 +44,7 @@ const ChapterActions = ({
     try {
       setIsLoading(true);
 
-      await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}`);
+      await axios.delete(`/api/courses/${courseId}`);
 
       toast.success("Chapter deleted successfully");
       router.refresh();
@@ -86,4 +80,4 @@ const ChapterActions = ({
   );
 };
 
-export default ChapterActions;
+export default CourseActions;
