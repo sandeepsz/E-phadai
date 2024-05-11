@@ -1,7 +1,17 @@
-import React from "react";
+import React, { Suspense } from "react";
 
 const Home = () => {
-  return <div></div>;
+  return (
+    <>
+      <Suspense
+        fallback={
+          <div className="animate-bounce text-purple-700 ">Loading...</div>
+        }
+      >
+        <div>Student Dashboard Page</div>
+      </Suspense>
+    </>
+  );
 };
 
 export default Home;

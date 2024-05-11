@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { Suspense } from "react";
 import Link from "next/link";
 import { DataTable } from "./_components/data-table";
 import { columns } from "./_components/columns";
@@ -23,9 +23,15 @@ const Courses = async () => {
     },
   });
   return (
-    <div className="p-8">
-      <DataTable columns={columns} data={courses} />
-    </div>
+    <Suspense
+      fallback={
+        <div className="animate-bounce text-purple-700 ">Loading...</div>
+      }
+    >
+      <div className="p-8">
+        <DataTable columns={columns} data={courses} />
+      </div>
+    </Suspense>
   );
 };
 

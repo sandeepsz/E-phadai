@@ -96,6 +96,8 @@ model UserProgress {
   chapterId String
   chapter   Chapter? @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 
+  isComplete Boolean
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
