@@ -20,8 +20,6 @@ export async function PATCH(
       },
     });
 
-    console.log("👨‍💻👨‍💻👨‍💻", courseMalik);
-
     if (!courseMalik) {
       return new NextResponse("Unauthorized User", { status: 401 });
     }
@@ -61,8 +59,6 @@ export async function PATCH(
         isPublished: true,
       },
     });
-
-    console.log("🌟🌟🌟", publishChapter);
 
     return NextResponse.json(publishChapter);
   } catch (error) {

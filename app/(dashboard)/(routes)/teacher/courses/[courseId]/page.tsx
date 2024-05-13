@@ -9,6 +9,9 @@ import Category from "./_components/category-form";
 import PriceForm from "./_components/price-form";
 import AttachmentForm from "./_components/attachment-form";
 import ChapterForm from "./_components/chapter-form";
+import Banner from "@/components/banner";
+import { Button } from "@/components/ui/button";
+import Actions from "./_components/actions";
 
 const CourseId = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = auth();
@@ -57,76 +60,96 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
 
+  const isComplete = requiredFields.every(Boolean);
+
   const completedText = `(${completedFields}/${totalFields})`;
 
   return (
-    <div className="p-6">
-      <div className="flex items-center justify-between">
-        <div className="flex flex-col gap-y-2">
-          <h1 className="text-2xl font-medium">Course setup</h1>
-          <span className="text-sm text-slate-600">
-            Complete all fields {completedText}
-          </span>
-        </div>
-
-        {/* <CourseActions initialData={course} courseId={params.courseId} /> */}
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-14">
-        <div>
-          <div className="flex items-center gap-x-2">
-            <LayoutDashboard className="w-5 h-5 text-[#5417d7]" />
-            <h2 className="font-semibold">Customize your course details</h2>
+    <>
+      {!course.isPublished && (
+        <Banner
+          label="This course is unpublished. It will be hidden from users. Please fill in all fields to enable the publish action"
+          variant="warning"
+        />
+      )}
+      <div className="p-6">
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-y-2">
+            <h1 className="text-2xl font-medium">Course setup</h1>
+            <span className="text-sm text-slate-600">
+              Complete all fields {completedText}
+            </span>
           </div>
-        </div>
-      </div>
 
-      <div className="md:flex gap-6 ">
-        <div className="w-full">
-          <CourseTitle initialData={course} courseId={params.courseId} />
-          <CourseDescription initialData={course} courseId={params.courseId} />
-          <CourseImage initialData={course} courseId={params.courseId} />
-          <Category
-            initialData={course}
+          <Actions
+            disabled={!isComplete}
             courseId={params.courseId}
-            options={categories.map((category) => ({
-              label: category.name,
-              value: category.id,
-            }))}
+            isPublished={course.isPublished}
           />
         </div>
-        <div className="space-y-6 w-full">
-          <div className="mt-4">
-            <div className="flex items-center space-y-2">
-              <ListChecks className="w-5 h-5 text-[#5417d7]" />
-              <h2 className="font-semibold">Course Chapters</h2>
-            </div>
-            <div>
-              <ChapterForm initialData={course} courseId={params.courseId} />
-            </div>
-          </div>
 
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-14">
           <div>
-            <div className="flex items-center space-y-2">
-              <CoinsIcon className="w-5 h-5 text-[#5417d7]" />
-              <h2 className="font-semibold">Course Price</h2>
-            </div>
-            <div>
-              <PriceForm initialData={course} courseId={params.courseId} />
+            <div className="flex items-center gap-x-2">
+              <LayoutDashboard className="w-5 h-5 text-[#5417d7]" />
+              <h2 className="font-semibold">Customize your course details</h2>
             </div>
           </div>
-          <div>
-            <div className="flex items-center space-y-2">
-              <Files className="w-5 h-5 text-[#5417d7]" />
-              <h2 className="font-semibold">Course Attachments</h2>
+        </div>
+
+        <div className="md:flex gap-6 ">
+          <div className="w-full">
+            <CourseTitle initialData={course} courseId={params.courseId} />
+            <CourseDescription
+              initialData={course}
+              courseId={params.courseId}
+            />
+            <CourseImage initialData={course} courseId={params.courseId} />
+            <Category
+              initialData={course}
+              courseId={params.courseId}
+              options={categories.map((category) => ({
+                label: category.name,
+                value: category.id,
+              }))}
+            />
+          </div>
+          <div className="space-y-6 w-full">
+            <div className="mt-4">
+              <div className="flex items-center space-y-2">
+                <ListChecks className="w-5 h-5 text-[#5417d7]" />
+                <h2 className="font-semibold">Course Chapters</h2>
+              </div>
+              <div>
+                <ChapterForm initialData={course} courseId={params.courseId} />
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center space-y-2">
+                <CoinsIcon className="w-5 h-5 text-[#5417d7]" />
+                <h2 className="font-semibold">Course Price</h2>
+              </div>
+              <div>
+                <PriceForm initialData={course} courseId={params.courseId} />
+              </div>
             </div>
             <div>
-              <AttachmentForm initialData={course} courseId={params.courseId} />
+              <div className="flex items-center space-y-2">
+                <Files className="w-5 h-5 text-[#5417d7]" />
+                <h2 className="font-semibold">Course Attachments</h2>
+              </div>
+              <div>
+                <AttachmentForm
+                  initialData={course}
+                  courseId={params.courseId}
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
