@@ -33,7 +33,7 @@ const Actions = ({ courseId, disabled, isPublished }: ActionsProps) => {
         router.refresh();
       }
     } catch (error) {
-      toast.error("something went wrong!!");
+      toast.error("Something went wrong");
     }
   };
 

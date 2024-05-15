@@ -34,11 +34,12 @@ export async function PATCH(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const hasPublishedChapter = course.chapters.some((chapter) => {
+    const hasPublishedChapter = course?.chapters.some((chapter) => {
       chapter.isPublished;
     });
 
-    console.log("👨‍💻👨‍💻👨‍💻", hasPublishedChapter);
+    console.log("🌟🌟🌟🌟", hasPublishedChapter);
+
     if (
       !course.title ||
       !course.description ||
