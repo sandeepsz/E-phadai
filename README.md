@@ -5,13 +5,21 @@ E-Padhai is a Learning Management System designed to make online learning easy a
 ## Technologies Used
 
 - **Next.js 14** with App Router
+- **MYSQL** as Database
 - **Prisma** as an ORM
-- **Connect Ips** for Payment
+- **Zustand** as global store
+<!-- - **Connect Ips** for Payment -->
 
 ## Additional Integrations
 
 - **Clerk Authentication and User Management**: [Clerk Website](https://clerk.com/)
 - **UploadThing**: [UploadThing Documentation](https://docs.uploadthing.com/)
+
+- **Cloud_DataBase** : [Aiven.cloud](https://aiven.io/)
+
+- **React_Confetti** : [🥳Click Here](https://www.npmjs.com/package/react-confetti)
+
+- **For_video**: [Using Mux](https://www.mux.com/)
 
 ## Environment Variables
 

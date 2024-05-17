@@ -9,6 +9,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
+import { useConfettiStore } from "@/hooks/use-confetti-store";
 
 interface ActionsProps {
   disabled: boolean;
@@ -18,6 +19,7 @@ interface ActionsProps {
 
 const Actions = ({ courseId, disabled, isPublished }: ActionsProps) => {
   const router = useRouter();
+  const confetti = useConfettiStore();
   const [isLoading, setIsLoading] = useState(false);
 
   const onPublish = async () => {
@@ -26,6 +28,7 @@ const Actions = ({ courseId, disabled, isPublished }: ActionsProps) => {
       if (!isPublished) {
         await axios.patch(`/api/courses/${courseId}/publish`);
         toast.success("course is published");
+        confetti.onOpen();
         router.refresh();
       } else {
         await axios.patch(`/api/courses/${courseId}/unpublish`);
