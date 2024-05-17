@@ -8,6 +8,7 @@ import {
   SheetContent,
   SheetHeader,
 } from "@/components/ui/sheet";
+import CourseSidebar from "./course-sidebar";
 
 interface MobileSideBarMenuProps {
   course: Course & {
@@ -24,10 +25,12 @@ const MobileSideBarMenu = ({
 }: MobileSideBarMenuProps) => {
   return (
     <Sheet>
-      <SheetTrigger>
+      <SheetTrigger className="md:hidden pr-4 hover:opacity-75 transition">
         <Menu />
       </SheetTrigger>
-      <SheetContent></SheetContent>
+      <SheetContent side="left" className="bg-white p-0 w-72">
+        <CourseSidebar course={course} userProgressCount={userProgressCount} />
+      </SheetContent>
     </Sheet>
   );
 };
