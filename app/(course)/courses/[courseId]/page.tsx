@@ -1,8 +1,27 @@
+import { db } from "@/lib/db";
+import { redirect } from "next/navigation";
 import React from "react";
-import Mux from "@mux/mux-node";
 
-const CourePage = () => {
-  return <div>CourePage</div>;
+const CourePage = async ({ params }: { params: { courseId: string } }) => {
+  const course = await db.course.findUnique({
+    where: {
+      id: params.courseId,
+    },
+    include: {
+      chapters: {
+        where: {
+          isPublished: true,
+        },
+        orderBy: {
+          position: "asc",
+        },
+      },
+    },
+  });
+  if (!course) {
+    redirect("/");
+  }
+  return redirect(`/courses/${course.id}/chapters/${course.chapters[0].id}`);
 };
 
 export default CourePage;

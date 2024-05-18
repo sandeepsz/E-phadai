@@ -34,19 +34,20 @@ const CourseSidebarItems = ({
     <button
       className={cn(
         "flex items-center gap-x-2 pl-4 text-sm text-purple-700/80 hover:text-purple-950 transition-all ",
-        isActive && "bg-[#fbf7ff] text-[#5316d6] hover:text-purple-950",
+        isActive &&
+          "bg-[#fbf7ff] text-[#5316d6] hover:text-purple-950 border-r-4 border-purple-900",
         isComplete && isActive && "bg-[#bedcbe] text-green-950"
       )}
       onClick={onClick}
     >
       <div className="flex items-center gap-x-2 py-4">
-        <Icon />
+        <Icon size={14} />
         {label}
       </div>
       <div
         className={cn(
           "ml-auto opacity-0 border-slate-600 h-full transition-all",
-          isActive && "opacity-100",
+          isActive && "opacity-100 border-emerald-800 ",
           isComplete && "border-emerald-800"
         )}
       />
