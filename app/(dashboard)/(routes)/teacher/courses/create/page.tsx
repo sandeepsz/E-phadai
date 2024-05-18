@@ -53,8 +53,8 @@ const Create = () => {
   const { isSubmitting, isValid, isLoading } = form.formState;
 
   return (
-    <div className="max-w-5xl  mx-auto flex md:items-center md:justify-center h-full p-6">
-      <div className=" bg-[#ded8ec] border border-[#5417d7] p-20 rounded-lg ">
+    <div className="max-w-5xl  mx-auto flex items-center md:justify-center h-full p-6">
+      <div className=" bg-[#e9e8ea] border  border-[#5417d7] md:p-20  p-10 rounded-lg ">
         <h2 className="text-2xl">Add Course Title</h2>
         <p className="text-sm text-slate-600">
           Write your suitable title for your course !!!
