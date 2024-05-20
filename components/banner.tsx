@@ -9,7 +9,7 @@ const bannerVariants = cva(
     variants: {
       variant: {
         warning: "bg-yellow-200 border-yello-30 text-primary",
-        success: "bg-emarald-700",
+        success: "bg-green-500 border-green-30 text-white ",
       },
       defaultVariants: {
         variant: "warning",

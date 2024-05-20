@@ -70,7 +70,7 @@ export function DataTable<TData, TValue>({
         <Link href="/teacher/courses/create">
           <Button>
             <PlusSquare className="w-4 h-4 mr-2" />
-            Add New Course
+            Add course
           </Button>
         </Link>
       </div>

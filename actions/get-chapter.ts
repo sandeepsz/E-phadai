@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { Attachment, Chapter } from "@prisma/client";
 
 interface GetChapterCourseProps {
   userId: string;
@@ -6,7 +7,7 @@ interface GetChapterCourseProps {
   chapterId: string;
 }
 
-export const getCourse = async ({
+export const getChapter = async ({
   userId,
   chapterId,
   courseId,
@@ -25,6 +26,9 @@ export const getCourse = async ({
         id: courseId,
         isPublished: true,
       },
+      select: {
+        price: true,
+      },
     });
 
     const chapter = await db.chapter.findUnique({
@@ -33,6 +37,58 @@ export const getCourse = async ({
         isPublished: true,
       },
     });
+
+    if (!course || !chapter) {
+      throw new Error("Chapter or course is not found");
+    }
+
+    let muxData = null;
+    let attachments: Attachment[] = [];
+    let nextChapter: Chapter | null;
+
+    if (primiumCourse) {
+      attachments = await db.attachment.findMany({
+        where: {
+          courseId: courseId,
+        },
+      });
+    }
+
+    if (chapter.isFree) {
+      muxData = await db.muxData.findUnique({
+        where: {
+          chapterId: chapterId,
+        },
+      });
+      nextChapter = await db.chapter.findFirst({
+        where: {
+          courseId: courseId,
+          isPublished: true,
+          position: {
+            gt: chapter?.position,
+          },
+        },
+        orderBy: {
+          position: "asc",
+        },
+      });
+    }
+
+    const userProgress = await db.userProgress.findUnique({
+      where: {
+        userId,
+        chapterId,
+      },
+    });
+
+    return {
+      chapter,
+      course,
+      muxData,
+      attachments,
+      userProgress,
+      // nextChapter,
+    };
   } catch (error) {
     console.log("ERROR:", error);
     return {
@@ -42,7 +98,7 @@ export const getCourse = async ({
       muxData: null,
       nextChapter: null,
       userProgress: null,
-      primiim: null,
+      primiumCourse: null,
     };
   }
 };
