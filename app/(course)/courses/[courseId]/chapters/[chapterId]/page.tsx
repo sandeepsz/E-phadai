@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { getChapter } from "@/actions/get-chapter";
 import Banner from "@/components/banner";
 import VideoPlayer from "./_components/video-player";
+import PurchaseChapter from "./_components/purchase-chapter";
 
 const ChapterId = async ({
   params,
@@ -34,8 +35,15 @@ const ChapterId = async ({
 
   return (
     <div>
-      {!isLocked && <Banner variant="success" label="Horray ! It's Free" />}
-      {isLocked && <Banner variant="success" label="It's not Free" />}
+      {!isLocked && (
+        <Banner
+          variant="success"
+          label="Horray!! Keep Learning Keep Exploring"
+        />
+      )}
+      {isLocked && (
+        <Banner variant="warning" label="It's not Free Please Purchase it." />
+      )}
       <div className="flex flex-col max-w-4xl pb-20">
         <div className="p-4">
           <VideoPlayer
@@ -45,6 +53,11 @@ const ChapterId = async ({
             isComplete={isComplete!}
             playbackId={muxData?.playbackId!}
             isLocked={isLocked}
+          />
+          <PurchaseChapter
+            initialData={chapter}
+            chapterId={params.chapterId}
+            courseId={params.courseId}
           />
         </div>
       </div>

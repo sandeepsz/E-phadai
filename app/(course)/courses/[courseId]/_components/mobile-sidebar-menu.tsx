@@ -28,7 +28,7 @@ const MobileSideBarMenu = ({
       <SheetTrigger className="md:hidden pr-4 hover:opacity-75 transition">
         <Menu />
       </SheetTrigger>
-      <SheetContent side="left" className="bg-white p-0 w-72">
+      <SheetContent side="left" className="bg-white p-0 w-80">
         <CourseSidebar course={course} userProgressCount={userProgressCount} />
       </SheetContent>
     </Sheet>

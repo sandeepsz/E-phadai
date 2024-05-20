@@ -8,7 +8,10 @@ const Home = () => {
           <div className="animate-bounce text-purple-700 ">Loading...</div>
         }
       >
-        <div>Student Dashboard Page</div>
+        <div>
+          This is the Student Dashbaord I am unable to access this Dashbaord
+          With out login in the websites.
+        </div>
       </Suspense>
     </>
   );
