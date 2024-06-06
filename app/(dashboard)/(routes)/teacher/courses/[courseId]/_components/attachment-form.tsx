@@ -103,7 +103,7 @@ const AttachmentForm = ({ initialData, courseId }: AttachmentFormProps) => {
 
       {isEditing && (
         <FileUpload
-          endpoint="courseImage"
+          endpoint="courseAttachment"
           onChange={(url) => {
             if (url) {
               onSubmit({ url: url });

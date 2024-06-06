@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Chapter, Course } from "@prisma/client";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
@@ -7,6 +7,10 @@ import { getChapter } from "@/actions/get-chapter";
 import Banner from "@/components/banner";
 import VideoPlayer from "./_components/video-player";
 import PurchaseChapter from "./_components/purchase-chapter";
+import CourseEnrollmentButton from "./_components/course-enrollment";
+import Preview from "@/components/preview";
+import { Separator } from "@/components/ui/separator";
+import { File } from "lucide-react";
 
 const ChapterId = async ({
   params,
@@ -54,11 +58,44 @@ const ChapterId = async ({
             playbackId={muxData?.playbackId!}
             isLocked={isLocked}
           />
-          <PurchaseChapter
+          {/* <PurchaseChapter
             initialData={chapter}
             chapterId={params.chapterId}
             courseId={params.courseId}
-          />
+          /> */}
+          <div className="p-4 flex flex-col md:flex-col items-center">
+            <h2 className="text-2xl font-bold mb-2">{chapter.title}</h2>
+            {primiumCourse ? (
+              <div>userProgress</div>
+            ) : (
+              <div>
+                <CourseEnrollmentButton
+                  courseId={params.chapterId}
+                  price={course.price!}
+                />
+              </div>
+            )}
+          </div>
+
+          <Separator />
+
+          <div>
+            <Preview value={chapter.description!} />
+          </div>
+          <div className="p-4">
+            <h2 className="text-xl font-semibold underline">Attachments</h2>
+            {attachments.map((item) => (
+              <a
+                href={item.url!}
+                key={item.id}
+                target="_blank"
+                className="flex items-center rounded-sm gap-x-2  mt-4 p-3 w-full bg-purple-200 text-[#303030]"
+              >
+                <File />
+                {item.name}
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </div>

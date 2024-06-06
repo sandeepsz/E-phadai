@@ -46,7 +46,7 @@ export const getChapter = async ({
     let attachments: Attachment[] = [];
     let nextChapter: Chapter | null;
 
-    if (primiumCourse) {
+    if (!primiumCourse) {
       attachments = await db.attachment.findMany({
         where: {
           courseId: courseId,
