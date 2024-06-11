@@ -44,7 +44,7 @@ export const getChapter = async ({
 
     let muxData = null;
     let attachments: Attachment[] = [];
-    let nextChapter: Chapter | null;
+    let nextChapter: Chapter | null = null;
 
     if (!primiumCourse) {
       attachments = await db.attachment.findMany({
@@ -87,7 +87,7 @@ export const getChapter = async ({
       muxData,
       attachments,
       userProgress,
-      // nextChapter,
+      nextChapter,
     };
   } catch (error) {
     console.log("ERROR:", error);

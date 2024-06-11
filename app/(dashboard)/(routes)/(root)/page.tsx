@@ -1,17 +1,11 @@
-import React, { Suspense } from "react";
+import React from "react";
 
-const Home = () => {
+const Dashboard = () => {
   return (
     <>
-      <Suspense
-        fallback={
-          <div className="animate-bounce text-purple-700 ">Loading...</div>
-        }
-      >
-        <div>Student Dashboard</div>
-      </Suspense>
+      <div>Student Dashboard</div>
     </>
   );
 };
 
-export default Home;
+export default Dashboard;

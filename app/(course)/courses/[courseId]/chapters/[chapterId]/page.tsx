@@ -34,7 +34,7 @@ const ChapterId = async ({
     redirect("/");
   }
 
-  const isLocked = !chapter.isFree;
+  const isLocked = !chapter.isFree && !primiumCourse;
   const isComplete = userProgress?.isComplete;
 
   return (
