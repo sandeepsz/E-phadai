@@ -25,8 +25,8 @@ const CourseEnrollmentButton = ({
       setIsLoading(true);
       await axios.post(`/api/courses/${courseId}/checkout`);
       const payload = {
-        return_url: "http://localhost:3000/successful",
-        website_url: "http://localhost:3000/",
+        return_url: "https://e-phadai.vercel.app/successful",
+        website_url: "https://e-phadai.vercel.app/",
         amount: 1000,
         purchase_order_id: "testy",
         purchase_order_name: "test",
