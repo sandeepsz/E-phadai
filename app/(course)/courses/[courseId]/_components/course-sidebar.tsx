@@ -27,21 +27,30 @@ const CourseSidebar = async ({
 
   const purchase = await db.premium.findUnique({
     where: {
-      id: course.id,
-      userId: userId,
-      courseId: course.id,
+      userId_courseId: {
+        userId: userId!,
+        courseId: course.id,
+      },
     },
   });
+
   return (
     <div className="h-full border-r w-80 flex flex-col over-y-auto shadow-md  ">
       <div className="p-8 flex flex-col items-center border-b">
         <h1>{course.title}</h1>
         <div className="mt-4">
-          <UserCourseProgress
-            varient="success"
-            value={userProgressCount}
-            size="default"
-          />
+          {purchase && (
+            <>
+              <UserCourseProgress
+                varient="success"
+                value={userProgressCount}
+                size="sm"
+              />
+              <p className="text-sm mt-2 font-semibold text-emerald-800">
+                {Math.round(userProgressCount)}% Finish
+              </p>
+            </>
+          )}
         </div>
       </div>
       <div className="flex flex-col w-full">
@@ -52,7 +61,7 @@ const CourseSidebar = async ({
             label={chapter.title}
             courseId={chapter.courseId}
             isComplete={!!chapter.userProgress?.[0]?.isComplete}
-            isLocked={!chapter.isFree}
+            isLocked={!chapter.isFree && !purchase}
           />
         ))}
       </div>

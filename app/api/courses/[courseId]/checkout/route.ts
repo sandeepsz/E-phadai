@@ -5,11 +5,14 @@ import { NextResponse } from "next/server";
 
 export async function POST(
   req: Request,
-  { params }: { params: { courseId: string } }
+  {
+    params,
+  }: {
+    params: { courseId: string };
+  }
 ) {
   try {
-    const { userId } = auth();
-    const user = currentUser();
+    const user = await currentUser();
     if (!user) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
@@ -23,14 +26,15 @@ export async function POST(
 
     const premium = (await db.premium.findUnique({
       where: {
-        id: params.courseId,
-        userId: userId!,
-        courseId: params.courseId,
+        userId_courseId: {
+          userId: user.id,
+          courseId: params.courseId,
+        },
       },
     })) as any;
 
     if (!course) {
-      return new NextResponse("Not Found", { status: 404 });
+      return new NextResponse("Course Not Found", { status: 404 });
     }
 
     if (premium) {
@@ -39,11 +43,10 @@ export async function POST(
 
     const createPayment = await db.premium.create({
       data: {
-        userId: userId!,
-        courseId: params.courseId,
+        courseId: course.id,
+        userId: user.id,
       },
     });
-
     return NextResponse.json(createPayment);
   } catch (error) {
     console.log("Course_Checkout Error", error);

@@ -68,7 +68,7 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
     <>
       {!course.isPublished && (
         <Banner
-          label="This course is unpublished. It will be hidden from users. Please fill in all fields to enable the publish action"
+          label="This course is unpublished. It will be hidden from users. Please fill in all fields to enable the publish action, and at least one chapter must be published"
           variant="warning"
         />
       )}
@@ -137,7 +137,7 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
             <div>
               <div className="flex items-center space-y-2">
                 <Files className="w-5 h-5 text-[#5417d7]" />
-                <h2 className="font-semibold">Course Attachments</h2>
+                <h2 className="font-semibold">Course Resources</h2>
               </div>
               <div>
                 <AttachmentForm

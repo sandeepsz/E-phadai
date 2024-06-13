@@ -9,7 +9,6 @@ export async function POST(
   try {
     const { userId } = auth();
     const { title } = await req.json();
-    console.log("Title", title);
 
     if (!userId) {
       return new NextResponse("Not allowed ! please login first", {

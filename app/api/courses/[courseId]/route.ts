@@ -17,7 +17,7 @@ export async function PATCH(
 ) {
   try {
     const { userId } = auth();
-    console.log("User ID:", userId);
+
     const { courseId } = params;
 
     const values = await req.json();

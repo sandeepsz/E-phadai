@@ -24,7 +24,7 @@ const UserCourseProgress = ({
 }: UserCourseProgressProps) => {
   return (
     <div>
-      <Progress className="h-4" value={value} />
+      <Progress className="h-2 w-60 bg-slate-300" value={value} />
     </div>
   );
 };

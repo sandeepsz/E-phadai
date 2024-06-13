@@ -1,12 +1,10 @@
 import React from "react";
 import { Chapter, Course } from "@prisma/client";
-import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { getChapter } from "@/actions/get-chapter";
 import Banner from "@/components/banner";
 import VideoPlayer from "./_components/video-player";
-import PurchaseChapter from "./_components/purchase-chapter";
 import CourseEnrollmentButton from "./_components/course-enrollment";
 import Preview from "@/components/preview";
 import { Separator } from "@/components/ui/separator";
@@ -17,13 +15,13 @@ const ChapterId = async ({
 }: {
   params: { courseId: string; chapterId: string };
 }) => {
-  const userId = auth();
+  const { userId, user } = auth();
 
   if (!userId) {
     redirect("/");
   }
 
-  const { chapter, course, attachments, muxData, userProgress, primiumCourse } =
+  const { chapter, course, attachments, muxData, userProgress, premium } =
     await getChapter({
       userId: String(userId),
       chapterId: params.chapterId,
@@ -34,8 +32,9 @@ const ChapterId = async ({
     redirect("/");
   }
 
-  const isLocked = !chapter.isFree && !primiumCourse;
-  const isComplete = userProgress?.isComplete;
+  const BooleanPremium = !!premium;
+  const isLocked = !chapter.isFree && !BooleanPremium;
+  const isComplete = !!premium && !userProgress?.isComplete;
 
   return (
     <div>
@@ -58,19 +57,14 @@ const ChapterId = async ({
             playbackId={muxData?.playbackId!}
             isLocked={isLocked}
           />
-          {/* <PurchaseChapter
-            initialData={chapter}
-            chapterId={params.chapterId}
-            courseId={params.courseId}
-          /> */}
           <div className="p-4 flex flex-col md:flex-col items-center">
             <h2 className="text-2xl font-bold mb-2">{chapter.title}</h2>
-            {primiumCourse ? (
+            {premium ? (
               <div>userProgress</div>
             ) : (
               <div>
                 <CourseEnrollmentButton
-                  courseId={params.chapterId}
+                  courseId={params.courseId}
                   price={course.price!}
                 />
               </div>
@@ -96,6 +90,8 @@ const ChapterId = async ({
               </a>
             ))}
           </div>
+
+          <Separator />
         </div>
       </div>
     </div>

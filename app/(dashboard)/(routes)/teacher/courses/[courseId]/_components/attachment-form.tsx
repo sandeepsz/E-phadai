@@ -30,7 +30,7 @@ const AttachmentForm = ({ initialData, courseId }: AttachmentFormProps) => {
     try {
       await axios.post(`/api/courses/${courseId}/attachments`, values);
       toggle();
-      toast.success("Course Description updated !");
+      toast.success("Course Attachment updated !");
       router.refresh();
     } catch {
       toast.error("Something went wrong!!!");

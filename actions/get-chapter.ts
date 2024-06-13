@@ -13,11 +13,12 @@ export const getChapter = async ({
   courseId,
 }: GetChapterCourseProps) => {
   try {
-    const primiumCourse = await db.premium.findUnique({
+    const premium = await db.premium.findUnique({
       where: {
-        id: chapterId,
-        userId: userId,
-        courseId: courseId,
+        userId_courseId: {
+          userId: userId!,
+          courseId: courseId,
+        },
       },
     });
 
@@ -46,10 +47,31 @@ export const getChapter = async ({
     let attachments: Attachment[] = [];
     let nextChapter: Chapter | null = null;
 
-    if (!primiumCourse) {
+    if (!premium) {
       attachments = await db.attachment.findMany({
         where: {
           courseId: courseId,
+        },
+      });
+    }
+
+    if (premium) {
+      muxData = await db.muxData.findUnique({
+        where: {
+          chapterId: chapterId,
+        },
+      });
+
+      nextChapter = await db.chapter.findFirst({
+        where: {
+          courseId: courseId,
+          isPublished: true,
+          position: {
+            gt: chapter?.position,
+          },
+        },
+        orderBy: {
+          position: "asc",
         },
       });
     }
@@ -88,6 +110,7 @@ export const getChapter = async ({
       attachments,
       userProgress,
       nextChapter,
+      premium,
     };
   } catch (error) {
     console.log("ERROR:", error);
@@ -98,7 +121,7 @@ export const getChapter = async ({
       muxData: null,
       nextChapter: null,
       userProgress: null,
-      primiumCourse: null,
+      primium: null,
     };
   }
 };

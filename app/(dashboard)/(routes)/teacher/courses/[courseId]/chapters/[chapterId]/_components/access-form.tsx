@@ -56,7 +56,7 @@ const AcessForm = ({ initialData, courseId, chapterId }: AcessFormProps) => {
         values
       );
       toggle();
-      toast.success("Chapter  updated !");
+      toast.success("Chapter access updated");
       router.refresh();
     } catch {
       toast.error("Something went wrong!!!");
