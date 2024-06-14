@@ -9,6 +9,7 @@ import CourseEnrollmentButton from "./_components/course-enrollment";
 import Preview from "@/components/preview";
 import { Separator } from "@/components/ui/separator";
 import { File } from "lucide-react";
+import CourseProgressButton from "./_components/course-progress-button";
 
 const ChapterId = async ({
   params,
@@ -21,12 +22,19 @@ const ChapterId = async ({
     redirect("/");
   }
 
-  const { chapter, course, attachments, muxData, userProgress, premium } =
-    await getChapter({
-      userId: String(userId),
-      chapterId: params.chapterId,
-      courseId: params.courseId,
-    });
+  const {
+    chapter,
+    course,
+    attachments,
+    muxData,
+    userProgress,
+    premium,
+    nextChapter,
+  } = await getChapter({
+    userId: String(userId),
+    chapterId: params.chapterId,
+    courseId: params.courseId,
+  });
 
   if (!chapter || !course) {
     redirect("/");
@@ -60,9 +68,14 @@ const ChapterId = async ({
           <div className="p-4 flex flex-col md:flex-col items-center">
             <h2 className="text-2xl font-bold mb-2">{chapter.title}</h2>
             {premium ? (
-              <div>userProgress</div>
+              <CourseProgressButton
+                courseId={params.courseId}
+                chapterId={params.chapterId}
+                nextChapterId={nextChapter?.id!}
+                isComplete={!!userProgress?.isComplete}
+              />
             ) : (
-              <div>
+              <div className="mt-2">
                 <CourseEnrollmentButton
                   courseId={params.courseId}
                   price={course.price!}

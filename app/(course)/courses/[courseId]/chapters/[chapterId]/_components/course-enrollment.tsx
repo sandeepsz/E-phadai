@@ -21,7 +21,6 @@ const CourseEnrollmentButton = ({
 
   const onClick = async () => {
     try {
-      console.log("🅿️🅿️🅿️---->", courseId);
       setIsLoading(true);
       await axios.post(`/api/courses/${courseId}/checkout`);
       const payload = {
