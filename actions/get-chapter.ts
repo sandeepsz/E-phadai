@@ -98,8 +98,10 @@ export const getChapter = async ({
 
     const userProgress = await db.userProgress.findUnique({
       where: {
-        userId,
-        chapterId,
+        userId_chapterId: {
+          userId,
+          chapterId,
+        },
       },
     });
 
