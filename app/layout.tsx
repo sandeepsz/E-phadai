@@ -21,10 +21,6 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <Head>
-          <link rel="icon" href="/logo.svg" />
-          <meta name="theme-color" content="#5417d7" />
-        </Head>
         <body className={inter.className}>
           <ConfettiProvider />
           <ToastProvider />
