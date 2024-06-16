@@ -24,6 +24,7 @@ const CourseCard = ({
   userProgress,
   category,
 }: CourseCardProps) => {
+  console.log("User Progress", userProgress);
   return (
     <Link href={`/courses/${id}`}>
       <div className="group  hover:shadow-sm transition overflow-hidden border border-slate-300 rounded-lg p-3 h-full">
@@ -43,16 +44,17 @@ const CourseCard = ({
               {chapterLength} {chapterLength == 1 ? "Chapter" : "Chapters"}
             </div>
           </div>
+
           <p className="text-md md:text-sm font-medium">
-            {userProgress !== null ? (
+            {userProgress !== null || 0 ? (
               <div>
                 <UserCourseProgress
                   varient="success"
-                  value={userProgress}
+                  value={userProgress!}
                   size="sm"
                 />
                 <p className="text-sm mt-2 font-semibold text-emerald-800">
-                  {Math.round(userProgress)}% Finish
+                  {Math.round(userProgress!)}% Finish
                 </p>
               </div>
             ) : (
