@@ -11,6 +11,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "e-padhai",
   description: "E-learning platform with user Progress",
+  icons: {
+    icon: "/e.png",
+  },
 };
 
 export default function RootLayout({

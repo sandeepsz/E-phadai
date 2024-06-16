@@ -13,7 +13,7 @@ interface CourseListProps {
   items: CoursesWithProgressWithCategory[];
 }
 
-const CoursesList = ({ items }: CourseListProps) => {
+const CoursesList = async ({ items }: CourseListProps) => {
   return (
     <div>
       <div className="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-3 2xl:grid-cols-4 gap-6">

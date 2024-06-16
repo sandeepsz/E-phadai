@@ -47,7 +47,7 @@ export const getChapter = async ({
     let attachments: Attachment[] = [];
     let nextChapter: Chapter | null = null;
 
-    if (!premium) {
+    if (premium) {
       attachments = await db.attachment.findMany({
         where: {
           courseId: courseId,
@@ -115,7 +115,6 @@ export const getChapter = async ({
       premium,
     };
   } catch (error) {
-    console.log("ERROR:", error);
     return {
       course: null,
       chapter: null,
