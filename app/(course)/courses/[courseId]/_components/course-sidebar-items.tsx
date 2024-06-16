@@ -36,7 +36,9 @@ const CourseSidebarItems = ({
         "flex items-center gap-x-2 pl-4 text-sm text-purple-700/80 hover:text-purple-950 transition-all ",
         isActive &&
           "bg-[#fbf7ff] text-[#5316d6] hover:text-purple-950 border-r-4 border-purple-900",
-        isComplete && isActive && "bg-[#bedcbe] text-green-950"
+        isComplete &&
+          isActive &&
+          "bg-[#bedcbe] text-green-500 hover:text-green-500"
       )}
       onClick={onClick}
     >

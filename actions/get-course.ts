@@ -43,13 +43,12 @@ export const getCourse = async ({
           },
         },
 
-        Premium: {
+        premiums: {
           where: {
             userId,
           },
         },
       },
-
       orderBy: {
         createdAt: "desc",
       },
@@ -58,7 +57,7 @@ export const getCourse = async ({
     const coursesWithProgress: CourseWithProgressWithCategory[] =
       await Promise.all(
         courses.map(async (course) => {
-          if (course.Premium.length === 0) {
+          if (course.premiums.length === 0) {
             return {
               ...course,
               progress: 0,

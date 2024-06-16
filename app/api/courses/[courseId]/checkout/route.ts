@@ -1,6 +1,5 @@
-import CourseId from "@/app/(dashboard)/(routes)/teacher/courses/[courseId]/page";
 import { db } from "@/lib/db";
-import { auth, currentUser } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 export async function POST(
@@ -13,41 +12,43 @@ export async function POST(
 ) {
   try {
     const user = await currentUser();
+
     if (!user) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const course = await db.course.findUnique({
+    const course = await db.course.findFirst({
       where: {
         id: params.courseId,
         isPublished: true,
       },
     });
 
-    const premium = (await db.premium.findUnique({
+    if (!course) {
+      return new NextResponse("Course Not Found", { status: 404 });
+    }
+
+    const premium = await db.premium.findUnique({
       where: {
         userId_courseId: {
           userId: user.id,
           courseId: params.courseId,
         },
       },
-    })) as any;
-
-    if (!course) {
-      return new NextResponse("Course Not Found", { status: 404 });
-    }
+    });
 
     if (premium) {
       return new NextResponse("Already Purchased", { status: 400 });
     }
 
-    const createPayment = await db.premium.create({
+    await db.premium.create({
       data: {
         courseId: course.id,
         userId: user.id,
       },
     });
-    return NextResponse.json(createPayment);
+
+    return new NextResponse("Premium Created", { status: 200 });
   } catch (error) {
     console.log("Course_Checkout Error", error);
     return new NextResponse("Internal Error", { status: 500 });

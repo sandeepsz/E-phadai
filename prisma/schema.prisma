@@ -29,7 +29,7 @@ model Course {
 
   attachments Attachment[]
   chapters    Chapter[]
-  Premium     Premium[]
+  premiums    Premium[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

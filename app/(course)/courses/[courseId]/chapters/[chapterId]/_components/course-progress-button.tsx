@@ -27,17 +27,17 @@ const CourseProgressButton = ({
     try {
       setIsLoading(true);
       await axios.put(
-        `/api/courses/${courseId}/chapters/${chapterId}/progress`,
-        {
-          isComplete: !isComplete,
-        }
+        `/api/courses/${courseId}/chapters/${chapterId}/progress`
       );
-      if (!isComplete && !nextChapterId) {
-        confetti.onOpen();
-      }
+
+      console.log("➡️➡️➡️", nextChapterId);
 
       if (!isComplete && nextChapterId) {
         router.push(`/courses/${courseId}/chapters/${chapterId}`);
+      }
+
+      if (!isComplete && !nextChapterId) {
+        confetti.onOpen();
       }
 
       toast.success("Nice!! Keep learning");
@@ -50,13 +50,17 @@ const CourseProgressButton = ({
   };
 
   return (
-    <Button
-      onClick={onClick}
-      disabled={loading}
-      className="w-full md:w-auto bg-emerald-700"
-    >
-      {isComplete ? "Not Finished" : "Finish and Next Chapter"}
-    </Button>
+    <>
+      {isComplete ? null : (
+        <Button
+          onClick={onClick}
+          disabled={loading}
+          className="w-full md:w-auto bg-emerald-700"
+        >
+          Finish and Next
+        </Button>
+      )}
+    </>
   );
 };
 export default CourseProgressButton;

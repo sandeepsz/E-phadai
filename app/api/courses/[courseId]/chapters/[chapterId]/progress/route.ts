@@ -8,8 +8,6 @@ export async function PUT(
 ) {
   try {
     const { userId } = auth();
-    const isComplete = await req.json();
-
     const userProgress = await db.userProgress.upsert({
       where: {
         userId_chapterId: {
@@ -18,12 +16,12 @@ export async function PUT(
         },
       },
       update: {
-        isComplete,
+        isComplete: true,
       },
       create: {
         userId: userId!,
         chapterId: params.chapterId,
-        isComplete,
+        isComplete: true,
       },
     });
 

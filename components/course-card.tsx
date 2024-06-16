@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import formatPrice from "@/lib/price-format";
 import { Book } from "lucide-react";
+import UserCourseProgress from "./user-progress";
 
 interface CourseCardProps {
   id: string;
@@ -42,7 +43,24 @@ const CourseCard = ({
               {chapterLength} {chapterLength == 1 ? "Chapter" : "Chapters"}
             </div>
           </div>
-          <p className="text-md md:text-sm font-medium">{formatPrice(price)}</p>
+          <p className="text-md md:text-sm font-medium">
+            {userProgress !== null ? (
+              <div>
+                <UserCourseProgress
+                  varient="success"
+                  value={userProgress}
+                  size="sm"
+                />
+                <p className="text-sm mt-2 font-semibold text-emerald-800">
+                  {Math.round(userProgress)}% Finish
+                </p>
+              </div>
+            ) : (
+              <p className="text-md md:text-sm font-medium text-slate-700">
+                {formatPrice(price)}
+              </p>
+            )}
+          </p>
         </div>
       </div>
     </Link>
