@@ -90,7 +90,9 @@ const ChapterId = async ({
             <Preview value={chapter.description!} />
           </div>
           <div className="p-4">
-            <h2 className="text-xl font-semibold underline">Attachments</h2>
+            <h2 className="text-xl font-semibold underline">
+              Course Resources
+            </h2>
             {attachments.map((item) => (
               <a
                 href={item.url!}

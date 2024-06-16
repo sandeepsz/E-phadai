@@ -18,9 +18,6 @@ const Dashboard = async () => {
     userId
   );
 
-  console.log("Completed🥳🥳", completedCourses.length);
-
-  console.log("Incompleted", inProgressCourse.length);
   return (
     <>
       <div className="p-6 space-y-4">
@@ -41,7 +38,7 @@ const Dashboard = async () => {
           />
         </div>
 
-        <CoursesList items={[...completedCourses]} />
+        <CoursesList items={[...completedCourses, ...inProgressCourse]} />
       </div>
     </>
   );

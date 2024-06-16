@@ -1,9 +1,14 @@
 import React from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
-type Props = {};
-
-const Loading = (props: Props) => {
-  return <div>Loading...</div>;
+const Loading = () => {
+  return (
+    <>
+      <div>
+        <Skeleton className="h-4 w-[250px]" />
+      </div>
+    </>
+  );
 };
 
 export default Loading;

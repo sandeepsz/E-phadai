@@ -24,7 +24,6 @@ const CourseCard = ({
   userProgress,
   category,
 }: CourseCardProps) => {
-  console.log("User Progress", userProgress);
   return (
     <Link href={`/courses/${id}`}>
       <div className="group  hover:shadow-sm transition overflow-hidden border border-slate-300 rounded-lg p-3 h-full">
@@ -49,7 +48,7 @@ const CourseCard = ({
             {userProgress !== null || 0 ? (
               <div>
                 <UserCourseProgress
-                  varient="success"
+                  varient="default"
                   value={userProgress!}
                   size="sm"
                 />

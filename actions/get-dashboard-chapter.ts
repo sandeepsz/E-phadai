@@ -49,7 +49,9 @@ export const getDashboardCourses = async (
       (course) => course.progress === 100
     );
 
-    const inProgressCourse = courses.filter((course) => course.progress! < 100);
+    const inProgressCourse = courses.filter(
+      (course) => course.progress! < 100 || course.progress! === 0
+    );
 
     return {
       completedCourses,
