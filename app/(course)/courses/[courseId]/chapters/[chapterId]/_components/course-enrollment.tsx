@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import formatPrice from "@/lib/price-format";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import React from "react";
@@ -50,13 +51,23 @@ const CourseEnrollmentButton = ({
     }
   };
   return (
-    <Button onClick={onClick}>
+    <Button variant="outline" onClick={onClick}>
       {isLoading ? (
         <div className="px-20">
           <Loader2 className="animate-spin " />
         </div>
       ) : (
-        <span> Pay with Khalti {formatPrice(price)}</span>
+        <>
+          <span>Pay with {formatPrice(price)}</span>
+          <Image
+            src="/khalti.jpg"
+            alt="khalti"
+            objectFit="cover"
+            width={40}
+            height={40}
+            className="ml-2 mt-2"
+          />
+        </>
       )}
     </Button>
   );

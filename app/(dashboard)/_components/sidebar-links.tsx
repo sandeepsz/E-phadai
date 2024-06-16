@@ -25,7 +25,7 @@ const teacherLinks = [
   },
   {
     icon: BarChart,
-    label: "Analytics",
+    label: "Earnings",
     href: "/teacher/analytics",
   },
 ];
