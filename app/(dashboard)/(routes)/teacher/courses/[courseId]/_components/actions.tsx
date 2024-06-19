@@ -22,6 +22,8 @@ const Actions = ({ courseId, disabled, isPublished }: ActionsProps) => {
   const confetti = useConfettiStore();
   const [isLoading, setIsLoading] = useState(false);
 
+  console.log("🥳🥳", isPublished);
+
   const onPublish = async () => {
     try {
       setIsLoading(true);
@@ -37,6 +39,8 @@ const Actions = ({ courseId, disabled, isPublished }: ActionsProps) => {
       }
     } catch (error) {
       toast.error("Something went wrong");
+    } finally {
+      setIsLoading(false);
     }
   };
 

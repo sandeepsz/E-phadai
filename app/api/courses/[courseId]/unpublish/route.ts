@@ -49,17 +49,17 @@ export async function PATCH(
       return new NextResponse("missing all fields", { status: 404 });
     }
 
-    const publised = await db.course.update({
+    const unpublised = await db.course.update({
       where: {
         id: params.courseId,
         userId,
       },
       data: {
-        isPublished: true,
+        isPublished: false,
       },
     });
 
-    return NextResponse.json(publised);
+    return NextResponse.json(unpublised);
   } catch (error) {
     console.log("Error PUBLISH:", error);
     return new NextResponse("Internal server error");

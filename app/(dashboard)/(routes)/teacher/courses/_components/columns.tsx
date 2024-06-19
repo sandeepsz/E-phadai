@@ -46,11 +46,11 @@ export const columns: ColumnDef<Course>[] = [
       );
     },
     cell: ({ row }) => {
-      const isPublished = row.getValue("isPublished") || "false";
-
+      // const isPublished = row.getValue("isPublished") || "false";
+      const isPublished = row.getValue("isPublished") || false;
       return (
         <Badge className={cn("bg-slate-400", isPublished && "bg-[#5417d7]")}>
-          {isPublished ? "Published" : "Unpublished"}
+          {isPublished ? "Published" : "Un published"}
         </Badge>
       );
     },
