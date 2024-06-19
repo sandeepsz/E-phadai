@@ -30,18 +30,15 @@ const CourseProgressButton = ({
         `/api/courses/${courseId}/chapters/${chapterId}/progress`
       );
 
-      console.log("➡️➡️➡️", nextChapterId);
-
-      if (!isComplete && nextChapterId) {
-        router.push(`/courses/${courseId}/chapters/${chapterId}`);
-      }
-
       if (!isComplete && !nextChapterId) {
         confetti.onOpen();
       }
 
       toast.success("Nice!! Keep learning");
       router.refresh();
+      if (nextChapterId) {
+        router.push(`/courses/${courseId}/chapters/${nextChapterId}`);
+      }
     } catch {
       toast.error("Something Went to wrong");
     } finally {

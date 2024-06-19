@@ -23,10 +23,10 @@ const CourseEnrollmentButton = ({
   const onClick = async () => {
     try {
       setIsLoading(true);
-      await axios.post(`/api/courses/${courseId}/checkout`);
+
       const payload = {
         return_url: "https://e-phadai.vercel.app/successful",
-        website_url: "https://e-phadai.vercel.app/",
+        website_url: "https://e-phadai.vercel.app/successful",
         amount: 1000,
         purchase_order_id: "testy",
         purchase_order_name: "test",
@@ -40,8 +40,8 @@ const CourseEnrollmentButton = ({
         `https://khalti-api-pvem.onrender.com/khalti-pay`,
         payload
       );
-
       router.push(res?.data?.data?.payment_url);
+      await axios.post(`/api/courses/${courseId}/checkout`);
     } catch (error) {
       console.error("🍾🍾", error);
       toast.error("Something Went Wrong");
