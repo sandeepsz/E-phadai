@@ -45,7 +45,7 @@ const CourseCard = ({
           </div>
 
           <p className="text-md md:text-sm font-medium">
-            {userProgress !== 0 ? (
+            {userProgress !== null && userProgress !== 0 ? (
               <div>
                 <UserCourseProgress
                   varient="default"
