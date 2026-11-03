@@ -1,7 +1,7 @@
 const formatPrice = (amount: number): string => {
-  return Intl.NumberFormat("ne-NP", {
+  return Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: "NPR",
+    currency: "USD",
   }).format(amount);
 };
 

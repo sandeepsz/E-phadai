@@ -4,7 +4,13 @@ import { CheckCircle2Icon, MoveRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
-const PaymentSuccessfull = () => {
+const PaymentSuccessfull = ({
+  searchParams,
+}: {
+  searchParams: { courseId?: string };
+}) => {
+  const href = searchParams.courseId ? `/courses/${searchParams.courseId}` : "/";
+
   return (
     <div className="flex  flex-col gap-2 justify-center items-center text-center mt-40 ">
       <div className="flex p-6 gap-2">
@@ -18,9 +24,9 @@ const PaymentSuccessfull = () => {
         Your payment was successful
       </p>
       <div className="flex gap-2  mt-2 items-center">
-        <Link href="/">
+        <Link href={href}>
           <Button className="bg-green-500 hover:bg-green-300 hover:text-green-800 transition-all">
-            Done
+            Go to course
           </Button>
         </Link>
       </div>
